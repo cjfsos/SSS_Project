@@ -26,7 +26,7 @@ public class Sign_Up extends JFrame {
 	JTextField PWtextField_2;
 	public JLabel idcheck = new JLabel("");
 	public JButton btnId = null;
-	JLabel pwcheck = new JLabel("");
+	JLabel pwcheck = new JLabel("");	
 	public boolean idckeked = false;
 	boolean pwckeked = false;
 	String id;
@@ -175,6 +175,7 @@ public class Sign_Up extends JFrame {
 			public void actionPerformed(ActionEvent e) {// DB에 너무 자주 왔다 갔다 하지 않게 하기위해 버튼을 클릭시 DB에서 확인하도록
 				if (idtextField.getText().equals("")) {
 					idcheck.setText("ID는 필수 입력사항입니다.");
+					idcheck.setForeground(Color.RED);
 					btnId.setText("ID중복확인");
 				} else if (!idtextField.getText().equals("")) {
 					id = idtextField.getText();

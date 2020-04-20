@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 
 import DataBase.DAO;
 
-public class SCenter {
+public class SCenter extends Thread {
 	Socket sc = null;
 	private InputStream inMsg = null;
 	private OutputStream outMsg = null;
@@ -26,6 +26,10 @@ public class SCenter {
 	SCenter(Socket sc) {
 		sct = this;
 		this.sc = sc;
+	}
+
+	@Override
+	public void run() {
 		Receive();
 	}
 
@@ -37,6 +41,7 @@ public class SCenter {
 				inMsg.read(reBuffer);
 				String msg = new String(reBuffer);
 				msg = msg.trim();
+				System.out.println(msg);
 				ForkedRoad(msg);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -58,9 +63,19 @@ public class SCenter {
 			STSignUp(msg);
 		} else if (msg.contains("loginChecking")) {
 			STsignin(msg);
+		} else if (msg.contains("currently")) {
+			currently(msg);
+			// 값이 있으면 보내고, 값이 없으면 서버에만 메시지 이사람 과거 내역 없음 뿡
 		} else {
 			System.out.println("클라이언트 승인 오류");
 			// 나중에 클라이언트에게 send메소드 사용 오류 메시지 전송예정
+		}
+	}
+
+	private void currently(String msg) {
+		StringTokenizer tk = new StringTokenizer(msg,"/");
+		if(tk.nextToken().equals("currently")) {
+			Sob.SendCurrently(dao.currently(tk.nextToken()));
 		}
 	}
 
@@ -72,6 +87,7 @@ public class SCenter {
 			boolean result = dao.login(logID, logPW);
 			if (result) {
 				Send("LoginSuccess/" + logID);
+				Sob.receveCollte();
 			} else {
 				Send("LoginFalse");
 			}
@@ -110,7 +126,7 @@ public class SCenter {
 		try {
 			outMsg = sc.getOutputStream();
 			String sket = msg;
-//			System.out.println(sket);// 메시지 확인용
+			System.out.println(sket + "서버가전송");// 메시지 확인용
 			outMsg.write(sket.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();

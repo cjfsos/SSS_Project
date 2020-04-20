@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class MsgBox extends JFrame {
+public class C_MsgBox extends JFrame {
 
 	private JPanel contentPane;
 
@@ -38,7 +38,7 @@ public class MsgBox extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MsgBox() {
+	public C_MsgBox() {
 //		signupMSG();
 //		signupFalseMSG();
 //		logNotSel();

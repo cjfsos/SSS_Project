@@ -2,6 +2,7 @@ package JTable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -14,16 +15,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Client.CCenter;
 import Client.CObject;
-import DataBase.DAO;
+import DataBase.Client_DTO;
 
 public class MainFrames extends JFrame {
 	private JPanel contentPane;
-	DAO daoIns = DAO.getInstance();
 	ArrayList<String[]> DTList = new ArrayList<>();
 	JPanel Ep;
 	String header[] = { "번호", "곡명", "가수명", "앨범", "장르" };
@@ -37,8 +38,7 @@ public class MainFrames extends JFrame {
 	CObject CO;
 	public CCenter CT;
 	MainFrames MF = this;
-	int selectedRow = -1;
-	MsgBox MB = new MsgBox();
+	C_MsgBox MB = new C_MsgBox();
 	public Sign_Up SU = null;
 	public JTextField IDtextField;
 	public JTextField PWtextField;
@@ -49,6 +49,11 @@ public class MainFrames extends JFrame {
 	public JPanel EpNp1;
 	public JPanel EpNp2;
 	public JLabel guest;
+	public String subContents[][];
+	public DefaultTableModel SubTableModel;
+	public boolean LoginCk = false;
+	public JTable SubTable;
+
 	/**
 	 * Launch the application.
 	 */
@@ -86,6 +91,33 @@ public class MainFrames extends JFrame {
 		EpNorthSetting2();
 		EpSouthSetting();
 		EpCenterSettig();
+		MainTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if (LoginCk) {
+						Client_DTO CD = new Client_DTO();
+						int row = MainTable.getSelectedRow();
+						CD.setId(guest.getText());
+						CD.setSong((String) MainTable.getValueAt(row, 1));
+						CD.setSinger((String) MainTable.getValueAt(row, 2));
+						CD.setGenre((String) MainTable.getValueAt(row, 4));
+						CO.SendCollete(CD);
+						String Subsubcontents[] = new String[3];
+						Subsubcontents[0] = (String) MainTable.getValueAt(row, 1);
+						Subsubcontents[1] = (String) MainTable.getValueAt(row, 2);
+						Subsubcontents[2] = (String) MainTable.getValueAt(row, 4);
+						SubTableModel.addRow(Subsubcontents);
+					} else {
+						int row = MainTable.getSelectedRow();
+						String Subsubcontents[] = new String[3];
+						Subsubcontents[0] = (String) MainTable.getValueAt(row, 1);
+						Subsubcontents[1] = (String) MainTable.getValueAt(row, 2);
+						Subsubcontents[2] = (String) MainTable.getValueAt(row, 4);
+						SubTableModel.addRow(Subsubcontents);
+					}
+				}
+			}
+		});
 	}
 
 	private void EpNorthSetting1() {
@@ -196,6 +228,11 @@ public class MainFrames extends JFrame {
 				guest.setText("");
 				EpNp2.setVisible(false);
 				EpNp1.setVisible(true);
+				LoginCk = false;
+				int sumRow = MF.SubTableModel.getRowCount();
+				for (int i = sumRow; i > 0; i--) {
+					MF.SubTableModel.removeRow(0);
+				}
 			}
 		});
 		logout.setBounds(104, 52, 85, 23);
@@ -213,15 +250,19 @@ public class MainFrames extends JFrame {
 
 	private void EpCenterSettig() {
 		String Subheader[] = { "곡명", "가수명", "장르" };
-		String subContents[][] = { { "test1", "실", "험" }, { "test2", "용" }, { "test3" } };
-		DefaultTableModel SubTableModel = new DefaultTableModel(subContents, Subheader) {
+		SubTableModel = new DefaultTableModel(subContents, Subheader) {
 			public boolean isCellEditable(int a, int b) {
 				return false;
 			}
 		};
-		JTable SubTable = new JTable(SubTableModel);
+		SubTable = new JTable(SubTableModel);
 		SubTable.getTableHeader().setVisible(false);
-		JScrollPane SubScrollPane = new JScrollPane(SubTable);
+		JScrollPane SubScrollPane = new JScrollPane(SubTable) {
+			public void setBorder(Border border) {
+				SubTable.setShowHorizontalLines(false);
+				SubTable.setShowVerticalLines(false);
+			}
+		};
 		SubScrollPane.setBounds(0, 125, 204, 391);
 		Ep.add(SubScrollPane);
 	}
@@ -230,16 +271,17 @@ public class MainFrames extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 515, 204, 63);
 		Ep.add(panel);
+		panel.setLayout(null);
 
 		JLabel playBtn = new JLabel("");
-		playBtn.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
-		playBtn.setBounds(35, 10, 45, 35);
+		playBtn.setBounds(27, 10, 45, 35);
 		panel.add(playBtn);
+		playBtn.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
 
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
-		label.setBounds(124, 10, 45, 35);
+		label.setBounds(127, 10, 45, 35);
 		panel.add(label);
+		label.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
 	}
 
 	private void WestSetting() {

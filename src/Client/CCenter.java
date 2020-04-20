@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
 import JTable.MainFrames;
-import JTable.MsgBox;
+import JTable.C_MsgBox;
 
 public class CCenter {
 	private Socket sc = null;
@@ -18,20 +19,20 @@ public class CCenter {
 	private int CObjectPort;
 	private CObject CO;
 	private Socket CObjectSK;
-	public MsgBox MB = new MsgBox();
+	public C_MsgBox MB = new C_MsgBox();
+	private String CkedID;
 
 	CCenter(Socket sc) {
 		this.sc = sc;
 		String startmsg = "StartProgram";
 		Send(startmsg);
 		Receive();
-//		beginData();
 	}
 
 	public void Send(String msg) {// 굳이 여기서 보내고
 		try {
 			outMsg = sc.getOutputStream();
-//		System.out.println(msg);//전송확인용
+			System.out.println(msg + "클라이언트가 전송");// 전송확인용
 			outMsg.write(msg.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -67,29 +68,41 @@ public class CCenter {
 				System.out.println("서버 프로그램 허락메시지 오류");
 			}
 		} else if (msg.equals("중복된 ID입니다.")) {
-//			MF.SU.idcheck.setText("중복된 ID입니다.");
-//			MF.SU.idcheck.setForeground(Color.RED);
-//		} else if (msg.equals("사용가능한 ID입니다.")) {
-//			MF.SU.idcheck.setText("사용가능한 ID입니다.");
-//			MF.SU.idcheck.setForeground(Color.BLUE);
-//			MF.SU.idckeked = true;
-//		} else if(msg.equals("SignUpCommit")) {
-//			MB.signupMSG();
-//			MF.SU.dispose();
+			MF.SU.idcheck.setText("중복된 ID입니다.");
+			MF.SU.idcheck.setForeground(Color.RED);
+		} else if (msg.equals("사용가능한 ID입니다.")) {
+			MF.SU.idcheck.setText("사용가능한 ID입니다.");
+			MF.SU.idcheck.setForeground(Color.BLUE);
+			MF.SU.idckeked = true;
+		} else if (msg.equals("SignUpCommit")) {
+			MB.signupMSG();
+			MF.SU.dispose();
 		} else if (msg.contains("LoginSuccess")) {
 			StringTokenizer tk = new StringTokenizer(msg, "/");
-			if(tk.nextToken().equals("LoginSuccess")){
+			if (tk.nextToken().equals("LoginSuccess")) {
 				MF.loginMSG.setText("");
 				MF.IDtextField.setText("");
 				MF.PWtextField.setText("");
+				MF.LoginCk = true;
 				MF.EpNp1.setVisible(false);
 				MF.EpNp2.setVisible(true);
-				MF.guest.setText(tk.nextToken());
+				CkedID = tk.nextToken();
+				MF.guest.setText(CkedID);
+				logListSetting();
 			}
 		} else if (msg.equals("LoginFalse")) {
 			MF.loginMSG.setText("");
 			MF.loginMSG.setText("<html>가입되지 않은 ID이거나 <br> ID/PW가 틀립니다.</html>");
 		}
+	}
+
+	private void logListSetting() {
+		int sumRow = MF.SubTableModel.getRowCount();
+		for (int i = sumRow; i > 0; i--) {
+			MF.SubTableModel.removeRow(0);
+		}
+		Send("currently/" + CkedID);
+		CO.receiveCurrently();
 	}
 
 	private void SettingReObject() {

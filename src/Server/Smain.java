@@ -14,7 +14,8 @@ public class Smain {
 			System.out.println("클라이언트 접속대기중");//확인용
 			Socket sc = ssc.accept();
 			System.out.println(sc.getInetAddress() + "/" + sc.getPort() + "/ 클라이언트 접속");// 접속확인용
-			new SCenter(sc);
+			SCenter ST = new SCenter(sc);
+			ST.start();
 		}
 	}
 }

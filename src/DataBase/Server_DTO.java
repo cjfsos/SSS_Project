@@ -1,11 +1,14 @@
 package DataBase;
 
-public class Song_DTO {
+import java.io.Serializable;
+
+public class Server_DTO implements Serializable{
 	private String no;
 	private String Stitle;
 	private String singer;
 	private String album;
 	private String genre;
+	
 
 	public String getNo() {
 		return no;
@@ -54,6 +57,14 @@ public class Song_DTO {
 		returnData[2]=this.singer;
 		returnData[3]=this.album;
 		returnData[4]=this.genre;
+		return returnData;
+	}
+	
+	public String[] currently() {
+		String[] returnData = new String[3];
+		returnData[0]=this.Stitle;
+		returnData[1]=this.singer;
+		returnData[2]=this.genre;
 		return returnData;
 	}
 }
