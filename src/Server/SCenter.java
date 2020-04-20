@@ -120,7 +120,7 @@ public class SCenter {
 	private void SettingSeObject() {
 		try {
 			SsObjectSK = new ServerSocket();
-			SsObjectSK.bind(new InetSocketAddress("172.30.1.5", SObjectPort));
+			SsObjectSK.bind(new InetSocketAddress("10.0.0.97", SObjectPort));
 			SObjectSK = SsObjectSK.accept();
 			Sob = new SObject(SObjectSK);
 		} catch (IOException e) {

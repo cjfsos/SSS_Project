@@ -1,6 +1,5 @@
 package Client;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,14 +7,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
-import JTable.MainFrame;
+import JTable.MainFrames;
 import JTable.MsgBox;
 
 public class CCenter {
 	private Socket sc = null;
 	private InputStream inMsg = null;
 	private OutputStream outMsg = null;
-	private MainFrame MF = null;
+	private MainFrames MF = null;
 	private int CObjectPort;
 	private CObject CO;
 	private Socket CObjectSK;
@@ -63,7 +62,7 @@ public class CCenter {
 			if (tk.nextToken().equals("allowProgram")) {
 				CObjectPort = Integer.parseInt(tk.nextToken());
 				SettingReObject();
-				MF = new MainFrame(this, CO);
+				MF = new MainFrames(this, CO);
 			} else {
 				System.out.println("서버 프로그램 허락메시지 오류");
 			}
@@ -95,7 +94,7 @@ public class CCenter {
 
 	private void SettingReObject() {
 		try {
-			CObjectSK = new Socket("172.30.1.5", CObjectPort);
+			CObjectSK = new Socket("10.0.0.97", CObjectPort);
 			CO = new CObject(CObjectSK);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

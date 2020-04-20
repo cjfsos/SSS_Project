@@ -9,7 +9,7 @@ public class Smain {
 
 	public static void main(String[] args) throws IOException {
 		ServerSocket ssc = new ServerSocket();
-		ssc.bind(new InetSocketAddress("172.30.1.5", 9999));
+		ssc.bind(new InetSocketAddress("10.0.0.97", 9999));
 		while (true) {
 			System.out.println("클라이언트 접속대기중");//확인용
 			Socket sc = ssc.accept();

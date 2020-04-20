@@ -1,8 +1,6 @@
 package JTable;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import DataBase.DAO;
 
-public class SignUp extends JFrame {
+public class Sign_Up extends JFrame {
 
 	JPanel contentPane;
 	JTextField idtextField;
@@ -36,7 +34,7 @@ public class SignUp extends JFrame {
 	DAO daoIns = DAO.getInstance();
 	JLabel pwicon1 = new JLabel("");
 	JLabel pwicon2 = new JLabel("");
-	MainFrame MF = null;
+	MainFrames MF = null;
 
 	/**
 	 * Launch the application.
@@ -57,7 +55,7 @@ public class SignUp extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SignUp(MainFrame MF) {
+	public Sign_Up(MainFrames MF) {
 		super("회원가입");
 		this.MF = MF;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,15 +85,15 @@ public class SignUp extends JFrame {
 		contentPane.add(idtextField);
 		idtextField.setColumns(10);
 
-		pwicon1.setIcon(new ImageIcon("C:\\Users\\w\\Desktop\\pw체크전.png"));
+		pwicon1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크전.png"));
 		pwicon1.setBounds(207, 54, 25, 25);
 		contentPane.add(pwicon1);
-		
-		pwicon2.setIcon(new ImageIcon("C:\\Users\\w\\Desktop\\pw체크전.png"));
+
+		pwicon2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크전.png"));
 		pwicon2.setBounds(207, 85, 25, 25);
 		contentPane.add(pwicon2);
 		idcheck.setVisible(true);
-		
+
 		PWtextField_1 = new JTextField();
 		PWtextField_1.setColumns(10);
 		PWtextField_1.setBounds(79, 55, 116, 21);
@@ -105,9 +103,9 @@ public class SignUp extends JFrame {
 			public void keyTyped(KeyEvent e) {
 				if (PWtextField_1.getText().length() < 3) {
 					pwcheck.setText("PW는 4글자 이상이어야합니다.");
-					pwicon1.setIcon(new ImageIcon("C:\\Users\\W\\Desktop\\pw체크전.png"));
+					pwicon1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크전.png"));
 				} else {
-					pwicon1.setIcon(new ImageIcon("C:\\Users\\W\\Desktop\\pw체크후.png"));
+					pwicon1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크후.png"));
 					pwcheck.setText("");
 
 				}
@@ -138,13 +136,13 @@ public class SignUp extends JFrame {
 					pwcheck.setText("사용 가능한 PW입니다.");
 					pwckeked = true;
 					pw = PWtextField_2.getText();
-					pwicon2.setIcon(new ImageIcon("C:\\Users\\W\\Desktop\\pw체크후.png"));
+					pwicon2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크후.png"));
 				} else if (!PWtextField_2.getText().equals(PWtextField_1.getText())) {
 					pwcheck.setText("PW와 PW확인이 일치해야 합니다.");
-					pwicon2.setIcon(new ImageIcon("C:\\Users\\W\\Desktop\\pw체크전.png"));
+					pwicon2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크전.png"));
 				}
 				if (PWtextField_1.getText().equals("") && PWtextField_2.getText().equals("")) {
-					pwicon2.setIcon(new ImageIcon("C:\\Users\\W\\Desktop\\pw체크전.png"));
+					pwicon2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\pw체크전.png"));
 					pwcheck.setText("");
 				}
 			}
@@ -198,7 +196,6 @@ public class SignUp extends JFrame {
 		idcheck.setHorizontalAlignment(SwingConstants.LEFT);
 		idcheck.setBounds(79, 35, 183, 15);
 		contentPane.add(idcheck);
-
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);

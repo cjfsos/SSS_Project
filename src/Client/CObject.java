@@ -7,18 +7,18 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import JTable.MainFrame;
+import JTable.MainFrames;
 
 public class CObject {
 	InputStream IS = null;
 	Socket sc;
-	MainFrame MF = null;
+	MainFrames MF = null;
 
 	CObject(Socket sc) {
 		this.sc = sc;
 	}
 
-	public void setMFins(MainFrame mf) {
+	public void setMFins(MainFrames mf) {
 		this.MF = mf;
 	}
 
