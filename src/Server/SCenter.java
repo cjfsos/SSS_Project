@@ -20,11 +20,11 @@ public class SCenter extends Thread {
 	private Socket SObjectSK = null;
 	private Random r = new Random();
 	private int SObjectPort = r.nextInt(998) + 9000;
-	private SCenter sct = null;
+//	private SCenter sct = null;
 	private SObject Sob;
 
 	SCenter(Socket sc) {
-		sct = this;
+//		sct = this;
 		this.sc = sc;
 	}
 
@@ -65,10 +65,20 @@ public class SCenter extends Thread {
 			STsignin(msg);
 		} else if (msg.contains("currently")) {
 			currently(msg);
-			// 값이 있으면 보내고, 값이 없으면 서버에만 메시지 이사람 과거 내역 없음 뿡
-		} else {
+		}else if(msg.contains("Recommend")) {
+			Recommend(msg);
+		}else if(msg.equals("OBReady?")) {
+			Sob.receveCollte();
+			Send("OBok");
+		}else {
 			System.out.println("클라이언트 승인 오류");
-			// 나중에 클라이언트에게 send메소드 사용 오류 메시지 전송예정
+		}
+	}
+
+	private void Recommend(String msg) {
+		StringTokenizer tk = new StringTokenizer(msg,"/");
+		if(tk.nextToken().equals("Recommend")) {
+			Sob.SendRecommend(dao.SeachMode(tk.nextToken()));
 		}
 	}
 
@@ -87,7 +97,6 @@ public class SCenter extends Thread {
 			boolean result = dao.login(logID, logPW);
 			if (result) {
 				Send("LoginSuccess/" + logID);
-				Sob.receveCollte();
 			} else {
 				Send("LoginFalse");
 			}

@@ -84,6 +84,7 @@ public class CCenter {
 				MF.IDtextField.setText("");
 				MF.PWtextField.setText("");
 				MF.LoginCk = true;
+				MF.CurrentlyList = true;
 				MF.EpNp1.setVisible(false);
 				MF.EpNp2.setVisible(true);
 				CkedID = tk.nextToken();
@@ -93,16 +94,27 @@ public class CCenter {
 		} else if (msg.equals("LoginFalse")) {
 			MF.loginMSG.setText("");
 			MF.loginMSG.setText("<html>가입되지 않은 ID이거나 <br> ID/PW가 틀립니다.</html>");
+		}else if (msg.equals("OBok")) {
+			MF.CollectOB();
 		}
 	}
 
-	private void logListSetting() {
+	public void logListSetting() {
 		int sumRow = MF.SubTableModel.getRowCount();
 		for (int i = sumRow; i > 0; i--) {
 			MF.SubTableModel.removeRow(0);
 		}
 		Send("currently/" + CkedID);
 		CO.receiveCurrently();
+	}
+	
+	public void Recommend() {
+		int sumRow = MF.SubTableModel.getRowCount();
+		for (int i = sumRow; i > 0; i--) {
+			MF.SubTableModel.removeRow(0);
+		}
+		Send("Recommend/" + CkedID);
+		CO.receiveRecommend();
 	}
 
 	private void SettingReObject() {

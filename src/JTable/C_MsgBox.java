@@ -42,6 +42,42 @@ public class C_MsgBox extends JFrame {
 //		signupMSG();
 //		signupFalseMSG();
 //		logNotSel();
+//		SelRowMiss();
+	}
+
+	public void SelRowMiss() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("원하는 리스트를 왼쪽클릭으로 선택");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 10, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+
+		JLabel label = new JLabel("색이 파랗게 변한 후에 실행하세요");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("굴림", Font.PLAIN, 13));
+		label.setBounds(12, 35, 208, 22);
+		contentPane.add(label);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 
 	public void logNotSel() {

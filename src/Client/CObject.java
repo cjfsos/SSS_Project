@@ -96,10 +96,46 @@ public class CObject {
 					try {
 						Object o = ois.readObject();
 						ArrayList<String[]> USData = (ArrayList<String[]>) o;
-						System.out.println(USData.size());
+						int sumRow = MF.SubTableModel.getRowCount();
+						for (int i = sumRow; i > 0; i--) {
+							MF.SubTableModel.removeRow(0);
+						}
 						for (int i = 0; i < USData.size(); i++) {
 							MF.SubTableModel.addRow(USData.get(i));
 						}
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void receiveRecommend() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				byte[] reBuffer = new byte[1024];
+				System.out.println("서버로부터 OB수신");
+				try {
+					IS = sc.getInputStream();
+					IS.read(reBuffer);// 여기서 대기로 인해 코드가 멈추는걸 방지하기 위해 멀티 쓰레드
+					ByteArrayInputStream bais = new ByteArrayInputStream(reBuffer);
+					ObjectInputStream ois = new ObjectInputStream(bais);
+					try {
+						Object o = ois.readObject();
+						ArrayList<String[]> Data = (ArrayList<String[]>) o;
+						System.out.println(Data.size());
+						int sumRow = MF.SubTableModel.getRowCount();
+						for (int i = sumRow; i > 0; i--) {
+							MF.SubTableModel.removeRow(0);
+						}
+						for (int i = 0; i < Data.size(); i++) {
+							MF.SubTableModel.addRow(Data.get(i));
+						}
+						MF.CurrentlyList = false;
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					}

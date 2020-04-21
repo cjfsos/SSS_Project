@@ -15,7 +15,6 @@ public class DAO {
 	private Connection con;
 	private Statement st;
 	private ResultSet rs;
-	private SCenter Sct;
 
 	private DAO() {
 	}
@@ -157,8 +156,8 @@ public class DAO {
 				Server_DTO SD = new Server_DTO();
 				st = con.createStatement();
 				rs = st.executeQuery(sql);
-				while (rs.next()) {//DB에 있는 값을 set한다음 currentlyData리스트에 넣음
-					//그다음 다시 DB에 있는 다음 값을 set 덮어쓰기하여, DB에 있는 값만큼 반복
+				while (rs.next()) {// DB에 있는 값을 set한다음 currentlyData리스트에 넣음
+					// 그다음 다시 DB에 있는 다음 값을 set 덮어쓰기하여, DB에 있는 값만큼 반복
 					SD.setStitle(rs.getString("곡명"));
 					SD.setSinger(rs.getString("가수명"));
 					SD.setGenre(rs.getString("장르"));
@@ -171,5 +170,50 @@ public class DAO {
 
 		}
 		return currentlyData;
+	}
+
+	public ArrayList<String[]> SeachMode(String nextToken) {
+		if (link()) {
+			String sql = "select 장르,cnt from(select 장르, count(*) cnt from popular where id = '" + nextToken
+					+ "'  group by 장르 order by cnt desc)where rownum <=1";
+			try {
+				st = con.createStatement();
+				rs = st.executeQuery(sql);
+				if (rs.next()) {
+					String modeGenre = rs.getString("장르");
+					recommend(modeGenre);
+					return recommend(modeGenre);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("최빈값 찾기 실패!");
+
+			}
+		}
+		System.out.println("최빈값 찾기 실패!");
+		return null;
+	}
+
+	private ArrayList<String[]> recommend(String modeGenre) {
+		ArrayList<String[]> Data = new ArrayList();
+		if (link()) {
+			String sql = "select * from song where 장르='" + modeGenre + "'";
+			try {
+				st = con.createStatement();
+				rs = st.executeQuery(sql);
+				Server_DTO SDB = new Server_DTO();
+				while (rs.next()) {
+					SDB.setStitle(rs.getString("곡명"));
+					SDB.setSinger(rs.getString("가수명"));
+					SDB.setGenre(rs.getString("장르"));
+					Data.add(SDB.currently());
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("장르별 추천곡 찾기 실패!");
+			}
+
+		}
+		return Data;
 	}
 }

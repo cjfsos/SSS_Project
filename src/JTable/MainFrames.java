@@ -9,7 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -53,6 +56,9 @@ public class MainFrames extends JFrame {
 	public DefaultTableModel SubTableModel;
 	public boolean LoginCk = false;
 	public JTable SubTable;
+	JPopupMenu popup;
+	public boolean CurrentlyList = false;
+	int USrow = -1;
 
 	/**
 	 * Launch the application.
@@ -77,6 +83,12 @@ public class MainFrames extends JFrame {
 		this.CT = CT;
 		this.CO = CO;
 		CO.setMFins(MF);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 850, 640);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		WestSetting();
 		EastSetting();
 		this.setVisible(true);
@@ -84,7 +96,7 @@ public class MainFrames extends JFrame {
 
 	private void EastSetting() {
 		Ep = new JPanel();
-		Ep.setBounds(621, 0, 204, 578);
+		Ep.setBounds(621, 0, 213, 602);
 		contentPane.add(Ep);
 		Ep.setLayout(null);
 		EpNorthSetting1();
@@ -95,34 +107,48 @@ public class MainFrames extends JFrame {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					if (LoginCk) {
-						Client_DTO CD = new Client_DTO();
-						int row = MainTable.getSelectedRow();
-						CD.setId(guest.getText());
-						CD.setSong((String) MainTable.getValueAt(row, 1));
-						CD.setSinger((String) MainTable.getValueAt(row, 2));
-						CD.setGenre((String) MainTable.getValueAt(row, 4));
-						CO.SendCollete(CD);
+						CT.Send("OBReady?");
+						USrow = MainTable.getSelectedRow();
 						String Subsubcontents[] = new String[3];
-						Subsubcontents[0] = (String) MainTable.getValueAt(row, 1);
-						Subsubcontents[1] = (String) MainTable.getValueAt(row, 2);
-						Subsubcontents[2] = (String) MainTable.getValueAt(row, 4);
+						Subsubcontents[0] = (String) MainTable.getValueAt(USrow, 1);
+						Subsubcontents[1] = (String) MainTable.getValueAt(USrow, 2);
+						Subsubcontents[2] = (String) MainTable.getValueAt(USrow, 4);
 						SubTableModel.addRow(Subsubcontents);
 					} else {
-						int row = MainTable.getSelectedRow();
-						String Subsubcontents[] = new String[3];
-						Subsubcontents[0] = (String) MainTable.getValueAt(row, 1);
-						Subsubcontents[1] = (String) MainTable.getValueAt(row, 2);
-						Subsubcontents[2] = (String) MainTable.getValueAt(row, 4);
-						SubTableModel.addRow(Subsubcontents);
+						ArrayList<String> beforeLG = new ArrayList<>();
+						USrow = MainTable.getSelectedRow();
+						String nowNO = (String) MainTable.getValueAt(USrow, 0);// No
+						beforeLG.add(nowNO);
+						for (int i = 0; i < beforeLG.size(); i++) {
+							if(nowNO.equals(beforeLG.get(i))) {
+								
+							}else {
+								String Subsubcontents[] = new String[3];
+								Subsubcontents[0] = (String) MainTable.getValueAt(USrow, 1);// 곡
+								Subsubcontents[1] = (String) MainTable.getValueAt(USrow, 2);// 가수
+								Subsubcontents[2] = (String) MainTable.getValueAt(USrow, 4);// 장르
+								SubTableModel.addRow(Subsubcontents);
+							}
+						}
 					}
 				}
 			}
+
 		});
+	}
+
+	public void CollectOB() {
+		Client_DTO CD = new Client_DTO();
+		CD.setId(guest.getText());
+		CD.setSong((String) MainTable.getValueAt(USrow, 1));
+		CD.setSinger((String) MainTable.getValueAt(USrow, 2));
+		CD.setGenre((String) MainTable.getValueAt(USrow, 4));
+		CO.SendCollete(CD);
 	}
 
 	private void EpNorthSetting1() {
 		EpNp1 = new JPanel();
-		EpNp1.setBounds(0, 0, 204, 126);
+		EpNp1.setBounds(0, 0, 213, 126);
 		Ep.add(EpNp1);
 		EpNp1.setLayout(null);
 
@@ -137,17 +163,17 @@ public class MainFrames extends JFrame {
 		EpNp1.add(PWLabel);
 
 		IDtextField = new JTextField();
-		IDtextField.setBounds(55, 10, 107, 21);
+		IDtextField.setBounds(55, 10, 120, 21);
 		EpNp1.add(IDtextField);
 		IDtextField.setColumns(10);
 
 		PWtextField = new JTextField();
 		PWtextField.setColumns(10);
-		PWtextField.setBounds(55, 38, 107, 21);
+		PWtextField.setBounds(55, 38, 120, 21);
 		EpNp1.add(PWtextField);
 
 		loginMSG = new JLabel("");
-		loginMSG.setBounds(35, 64, 140, 30);
+		loginMSG.setBounds(55, 62, 140, 30);
 		EpNp1.add(loginMSG);
 
 		signIn = new JButton("로그인");
@@ -161,7 +187,7 @@ public class MainFrames extends JFrame {
 				SU = new Sign_Up(MF);
 			}
 		});
-		Sign_Up.setBounds(105, 95, 85, 23);
+		Sign_Up.setBounds(105, 95, 96, 23);
 		EpNp1.add(Sign_Up);
 		EpNp1.setVisible(true);
 	}
@@ -205,7 +231,7 @@ public class MainFrames extends JFrame {
 
 	private void EpNorthSetting2() {
 		EpNp2 = new JPanel();
-		EpNp2.setBounds(0, 0, 204, 126);
+		EpNp2.setBounds(0, 0, 213, 126);
 		Ep.add(EpNp2);
 		EpNp2.setLayout(null);
 
@@ -219,7 +245,7 @@ public class MainFrames extends JFrame {
 		EpNp2.add(lblNewLabel);
 
 		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(12, 52, 85, 23);
+		btnNewButton.setBounds(12, 52, 90, 23);
 		EpNp2.add(btnNewButton);
 
 		JButton logout = new JButton("로그아웃");
@@ -235,15 +261,26 @@ public class MainFrames extends JFrame {
 				}
 			}
 		});
-		logout.setBounds(104, 52, 85, 23);
+		logout.setBounds(108, 52, 90, 23);
 		EpNp2.add(logout);
 
-		JButton button_1 = new JButton("New button");
-		button_1.setBounds(104, 85, 85, 23);
+		JButton button_1 = new JButton("추천받기");
+		button_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CT.Recommend();
+			}
+		});
+		button_1.setBounds(108, 85, 90, 23);
 		EpNp2.add(button_1);
 
-		JButton button_2 = new JButton("New button");
-		button_2.setBounds(12, 85, 85, 23);
+		JButton button_2 = new JButton("재생 목록");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CT.logListSetting();
+			}
+		});
+		button_2.setBounds(12, 85, 90, 23);
 		EpNp2.add(button_2);
 		EpNp2.setVisible(false);
 	}
@@ -263,13 +300,71 @@ public class MainFrames extends JFrame {
 				SubTable.setShowVerticalLines(false);
 			}
 		};
-		SubScrollPane.setBounds(0, 125, 204, 391);
+		popupSetting();
+		SubTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				if (e.getButton() == 3) {
+					int column = SubTable.columnAtPoint(e.getPoint());
+					int row = SubTable.rowAtPoint(e.getPoint());
+					popup.show(SubTable, e.getX(), e.getY());
+				}
+			}
+		});
+		SubScrollPane.setBounds(0, 125, 213, 415);
 		Ep.add(SubScrollPane);
+	}
+
+	private void popupSetting() {
+		popup = new JPopupMenu();
+		JMenuItem popupDel = new JMenuItem("리스트에서 삭제");
+		popupDel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!CurrentlyList) {
+					int Row = SubTable.getSelectedRow();
+					if (Row != -1) {
+						SubTableModel.removeRow(Row);
+					} else if (Row == -1) {
+						MB.SelRowMiss();
+					}
+				} else {
+
+					// db에서 삭제먼저 윗줄에서 해줘야함
+					int Row = SubTable.getSelectedRow();
+					if (Row != -1) {
+						SubTableModel.removeRow(Row);
+					} else if (Row == -1) {
+						MB.SelRowMiss();
+					}
+				}
+			}
+		});
+		JMenuItem popupAllDell = new JMenuItem("리스트 전체 삭제");
+		popupAllDell.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!CurrentlyList) {
+					int sumRow = MF.SubTableModel.getRowCount();
+					for (int i = sumRow; i > 0; i--) {
+						MF.SubTableModel.removeRow(0);
+					}
+				} else {
+
+					// db에서 삭제먼저 윗줄에서 해줘야함
+					int sumRow = MF.SubTableModel.getRowCount();
+					for (int i = sumRow; i > 0; i--) {
+						MF.SubTableModel.removeRow(0);
+					}
+				}
+			}
+		});
+		popup.add(popupDel);
+		popup.add(popupAllDell);
 	}
 
 	private void EpSouthSetting() {
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 515, 204, 63);
+		panel.setBounds(0, 539, 213, 63);
 		Ep.add(panel);
 		panel.setLayout(null);
 
@@ -285,15 +380,9 @@ public class MainFrames extends JFrame {
 	}
 
 	private void WestSetting() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 841, 617);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
 		JScrollPane MainScrollPane = new JScrollPane(MainTable);
-		MainScrollPane.setBounds(0, 0, 623, 578);
+		MainScrollPane.setBounds(0, 0, 623, 602);
 		contentPane.add(MainScrollPane);
 
 		String loadList = "SongList";
@@ -302,4 +391,5 @@ public class MainFrames extends JFrame {
 		MainTable.getTableHeader().setReorderingAllowed(false);
 		MainTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
+
 }
