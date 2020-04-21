@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -41,7 +40,7 @@ public class MainFrames extends JFrame {
 	CObject CO;
 	public CCenter CT;
 	MainFrames MF = this;
-	C_MsgBox MB = new C_MsgBox();
+	public C_MsgBox MB = new C_MsgBox();
 	public Sign_Up SU = null;
 	public JTextField IDtextField;
 	public JTextField PWtextField;
@@ -106,35 +105,93 @@ public class MainFrames extends JFrame {
 		MainTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					if (LoginCk) {
-						CT.Send("OBReady?");
-						USrow = MainTable.getSelectedRow();
-						String Subsubcontents[] = new String[3];
-						Subsubcontents[0] = (String) MainTable.getValueAt(USrow, 1);
-						Subsubcontents[1] = (String) MainTable.getValueAt(USrow, 2);
-						Subsubcontents[2] = (String) MainTable.getValueAt(USrow, 4);
-						SubTableModel.addRow(Subsubcontents);
-					} else {
-						ArrayList<String> beforeLG = new ArrayList<>();
-						USrow = MainTable.getSelectedRow();
-						String nowNO = (String) MainTable.getValueAt(USrow, 0);// No
-						beforeLG.add(nowNO);
-						for (int i = 0; i < beforeLG.size(); i++) {
-							if(nowNO.equals(beforeLG.get(i))) {
-								
-							}else {
-								String Subsubcontents[] = new String[3];
-								Subsubcontents[0] = (String) MainTable.getValueAt(USrow, 1);// 곡
-								Subsubcontents[1] = (String) MainTable.getValueAt(USrow, 2);// 가수
-								Subsubcontents[2] = (String) MainTable.getValueAt(USrow, 4);// 장르
-								SubTableModel.addRow(Subsubcontents);
-							}
+					if (LoginCk) {// 로그인시
+						if (CurrentlyList) {// 로그인 + 최근재생목록
+							afterSet();
 						}
+					} else {// 비로그인시
+						beforeSet();
 					}
 				}
 			}
-
 		});
+
+	}
+
+	protected void beforeSet() {
+		USrow = MainTable.getSelectedRow();
+		String Maintitle = (String) MainTable.getValueAt(USrow, 1);// 곡
+		String Mainsinger = (String) MainTable.getValueAt(USrow, 2);// 가수
+		String Maingenre = (String) MainTable.getValueAt(USrow, 4);// 장르
+
+		int Max = SubTable.getRowCount();
+		if (Max == 0) {
+			String Subsubcontents[] = new String[3];
+			Subsubcontents[0] = Maintitle;// 곡
+			Subsubcontents[1] = Mainsinger;// 가수
+			Subsubcontents[2] = Maingenre;// 장르
+			SubTableModel.addRow(Subsubcontents);
+		} else {
+			boolean check = false;
+			for (int i = 1; i < Max; i++) {
+				if (Maintitle.equals(SubTable.getValueAt(i, 0))
+						/* 곡 일치여부 */ && Mainsinger.equals(SubTable.getValueAt(i, 1))/* 가수 일치여부 */
+						&& Maingenre.equals(SubTable.getValueAt(i, 2))/* 장르 일치여부 */) {
+					System.out.println("일치");
+					MB.addOver();
+					check = true;
+					break;
+				}
+			}
+			if (!check) {
+				System.out.println("불일치");
+				String Subsubcontents[] = new String[3];
+				Subsubcontents[0] = Maintitle;// 곡
+				Subsubcontents[1] = Mainsinger;// 가수
+				Subsubcontents[2] = Maingenre;// 장르
+				SubTableModel.addRow(Subsubcontents);
+			}
+		}
+	}
+
+	protected void afterSet() {
+		USrow = MainTable.getSelectedRow();
+		String Maintitle = (String) MainTable.getValueAt(USrow, 1);// 곡
+		String Mainsinger = (String) MainTable.getValueAt(USrow, 2);// 가수
+		String Maingenre = (String) MainTable.getValueAt(USrow, 4);// 장르
+
+		int Max = SubTable.getRowCount();
+		System.out.println(Max);
+		if (Max == 0) {
+			System.out.println("선택행 없음");
+			String Subsubcontents[] = new String[3];
+			Subsubcontents[0] = Maintitle;// 곡
+			Subsubcontents[1] = Mainsinger;// 가수
+			Subsubcontents[2] = Maingenre;// 장르
+			SubTableModel.addRow(Subsubcontents);
+		} else {
+			boolean check = false;
+			for (int i = 0; i < Max; i++) {
+				if (Maintitle.equals(SubTable.getValueAt(i, 0))
+						/* 곡 일치여부 */ && Mainsinger.equals(SubTable.getValueAt(i, 1))/* 가수 일치여부 */
+						&& Maingenre.equals(SubTable.getValueAt(i, 2))/* 장르 일치여부 */) {
+					System.out.println("일치");
+					MB.addOver();
+					check = true;
+					break;
+				}
+			}
+			if (!check) {
+//				System.out.println("불일치");
+//				CT.Send("OBReady?");
+				USrow = MainTable.getSelectedRow();
+				String Subsubcontents[] = new String[3];
+				Subsubcontents[0] = Maintitle;// 곡
+				Subsubcontents[1] = Mainsinger;// 가수
+				Subsubcontents[2] = Maingenre;// 장르
+				SubTableModel.addRow(Subsubcontents);
+			}
+		}
 	}
 
 	public void CollectOB() {
@@ -255,6 +312,7 @@ public class MainFrames extends JFrame {
 				EpNp2.setVisible(false);
 				EpNp1.setVisible(true);
 				LoginCk = false;
+				CurrentlyList = false;
 				int sumRow = MF.SubTableModel.getRowCount();
 				for (int i = sumRow; i > 0; i--) {
 					MF.SubTableModel.removeRow(0);
@@ -269,6 +327,7 @@ public class MainFrames extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				CT.Recommend();
+				CurrentlyList = false;
 			}
 		});
 		button_1.setBounds(108, 85, 90, 23);
@@ -278,6 +337,7 @@ public class MainFrames extends JFrame {
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CT.logListSetting();
+				CurrentlyList = true;
 			}
 		});
 		button_2.setBounds(12, 85, 90, 23);
@@ -304,9 +364,12 @@ public class MainFrames extends JFrame {
 		SubTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (e.getButton() == 3) {
-					int column = SubTable.columnAtPoint(e.getPoint());
-					int row = SubTable.rowAtPoint(e.getPoint());
-					popup.show(SubTable, e.getX(), e.getY());
+					if (LoginCk && !CurrentlyList) {
+					} else {
+						int column = SubTable.columnAtPoint(e.getPoint());
+						int row = SubTable.rowAtPoint(e.getPoint());
+						popup.show(SubTable, e.getX(), e.getY());
+					}
 				}
 			}
 		});
@@ -320,16 +383,18 @@ public class MainFrames extends JFrame {
 		popupDel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!CurrentlyList) {
+				if (!LoginCk) {// 비로그인시
 					int Row = SubTable.getSelectedRow();
+
 					if (Row != -1) {
+
 						SubTableModel.removeRow(Row);
 					} else if (Row == -1) {
 						MB.SelRowMiss();
 					}
-				} else {
-
+				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생
 					// db에서 삭제먼저 윗줄에서 해줘야함
+
 					int Row = SubTable.getSelectedRow();
 					if (Row != -1) {
 						SubTableModel.removeRow(Row);
@@ -343,13 +408,14 @@ public class MainFrames extends JFrame {
 		popupAllDell.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!CurrentlyList) {
+				if (!LoginCk) {// 비로그인시
 					int sumRow = MF.SubTableModel.getRowCount();
 					for (int i = sumRow; i > 0; i--) {
 						MF.SubTableModel.removeRow(0);
 					}
-				} else {
+				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생
 
+					/// 요기요 요기
 					// db에서 삭제먼저 윗줄에서 해줘야함
 					int sumRow = MF.SubTableModel.getRowCount();
 					for (int i = sumRow; i > 0; i--) {

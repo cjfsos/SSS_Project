@@ -32,7 +32,7 @@ public class CCenter {
 	public void Send(String msg) {// 굳이 여기서 보내고
 		try {
 			outMsg = sc.getOutputStream();
-			System.out.println(msg + "클라이언트가 전송");// 전송확인용
+//			System.out.println(msg + "클라이언트가 전송");// 전송확인용
 			outMsg.write(msg.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,7 +47,7 @@ public class CCenter {
 				inMsg.read(reBuffer);
 				String msg = new String(reBuffer);
 				msg = msg.trim();
-				System.out.println(msg);// 전송이 제대로 왔는지 확인용
+//				System.out.println(msg);// 전송이 제대로 왔는지 확인용
 				ForkedRoad(msg);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -84,7 +84,6 @@ public class CCenter {
 				MF.IDtextField.setText("");
 				MF.PWtextField.setText("");
 				MF.LoginCk = true;
-				MF.CurrentlyList = true;
 				MF.EpNp1.setVisible(false);
 				MF.EpNp2.setVisible(true);
 				CkedID = tk.nextToken();
@@ -94,7 +93,7 @@ public class CCenter {
 		} else if (msg.equals("LoginFalse")) {
 			MF.loginMSG.setText("");
 			MF.loginMSG.setText("<html>가입되지 않은 ID이거나 <br> ID/PW가 틀립니다.</html>");
-		}else if (msg.equals("OBok")) {
+		} else if (msg.equals("OBok")) {
 			MF.CollectOB();
 		}
 	}
@@ -107,7 +106,7 @@ public class CCenter {
 		Send("currently/" + CkedID);
 		CO.receiveCurrently();
 	}
-	
+
 	public void Recommend() {
 		int sumRow = MF.SubTableModel.getRowCount();
 		for (int i = sumRow; i > 0; i--) {

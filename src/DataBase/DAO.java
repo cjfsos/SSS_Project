@@ -75,7 +75,6 @@ public class DAO {
 				PreparedStatement pst = con.prepareStatement(sql);
 				pst.setString(1, id);
 				rs = pst.executeQuery();
-
 				if (rs.next()) {
 					int cnt = rs.getInt("cnt");
 					if (cnt > 0) {
@@ -187,10 +186,9 @@ public class DAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 				System.out.println("최빈값 찾기 실패!");
-
 			}
 		}
-		System.out.println("최빈값 찾기 실패!");
+		System.out.println("DB연결 실패");
 		return null;
 	}
 

@@ -103,6 +103,7 @@ public class CObject {
 						for (int i = 0; i < USData.size(); i++) {
 							MF.SubTableModel.addRow(USData.get(i));
 						}
+						MF.CurrentlyList = true;
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -127,7 +128,9 @@ public class CObject {
 					try {
 						Object o = ois.readObject();
 						ArrayList<String[]> Data = (ArrayList<String[]>) o;
-						System.out.println(Data.size());
+						if(Data==null) {
+							MF.MB.recommendNull();
+						}
 						int sumRow = MF.SubTableModel.getRowCount();
 						for (int i = sumRow; i > 0; i--) {
 							MF.SubTableModel.removeRow(0);
@@ -135,6 +138,7 @@ public class CObject {
 						for (int i = 0; i < Data.size(); i++) {
 							MF.SubTableModel.addRow(Data.get(i));
 						}
+						System.out.println("여기가 안되니?3");
 						MF.CurrentlyList = false;
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();

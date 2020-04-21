@@ -43,6 +43,72 @@ public class C_MsgBox extends JFrame {
 //		signupFalseMSG();
 //		logNotSel();
 //		SelRowMiss();
+//		addOver();
+//		recommendNull();
+	}
+
+	public void recommendNull() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("현재까지 들은 곡이 없어서");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 10, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+		
+		JLabel label = new JLabel("추천을 할 수가 없습니다.");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("굴림", Font.PLAIN, 13));
+		label.setBounds(12, 35, 218, 22);
+		contentPane.add(label);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+	}
+
+	public void addOver() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("같은 곡을 추가 할 수 없습니다.");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 28, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 
 	public void SelRowMiss() {

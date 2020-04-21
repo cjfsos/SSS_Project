@@ -41,7 +41,7 @@ public class SCenter extends Thread {
 				inMsg.read(reBuffer);
 				String msg = new String(reBuffer);
 				msg = msg.trim();
-				System.out.println(msg);
+//				System.out.println(msg);//전송 제대로 왔는지 확인용
 				ForkedRoad(msg);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -65,26 +65,26 @@ public class SCenter extends Thread {
 			STsignin(msg);
 		} else if (msg.contains("currently")) {
 			currently(msg);
-		}else if(msg.contains("Recommend")) {
+		} else if (msg.contains("Recommend")) {
 			Recommend(msg);
-		}else if(msg.equals("OBReady?")) {
+		} else if (msg.equals("OBReady?")) {
 			Sob.receveCollte();
 			Send("OBok");
-		}else {
+		} else {
 			System.out.println("클라이언트 승인 오류");
 		}
 	}
 
 	private void Recommend(String msg) {
-		StringTokenizer tk = new StringTokenizer(msg,"/");
-		if(tk.nextToken().equals("Recommend")) {
+		StringTokenizer tk = new StringTokenizer(msg, "/");
+		if (tk.nextToken().equals("Recommend")) {
 			Sob.SendRecommend(dao.SeachMode(tk.nextToken()));
 		}
 	}
 
 	private void currently(String msg) {
-		StringTokenizer tk = new StringTokenizer(msg,"/");
-		if(tk.nextToken().equals("currently")) {
+		StringTokenizer tk = new StringTokenizer(msg, "/");
+		if (tk.nextToken().equals("currently")) {
 			Sob.SendCurrently(dao.currently(tk.nextToken()));
 		}
 	}
@@ -135,7 +135,7 @@ public class SCenter extends Thread {
 		try {
 			outMsg = sc.getOutputStream();
 			String sket = msg;
-			System.out.println(sket + "서버가전송");// 메시지 확인용
+//			System.out.println(sket + "서버가전송");// 메시지 확인용
 			outMsg.write(sket.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
