@@ -58,6 +58,7 @@ public class MainFrames extends JFrame {
 	JPopupMenu popup;
 	public boolean CurrentlyList = false;
 	int USrow = -1;
+	public int LogRow = -1;
 
 	/**
 	 * Launch the application.
@@ -133,7 +134,7 @@ public class MainFrames extends JFrame {
 			SubTableModel.addRow(Subsubcontents);
 		} else {
 			boolean check = false;
-			for (int i = 1; i < Max; i++) {
+			for (int i = 0; i < Max; i++) {
 				if (Maintitle.equals(SubTable.getValueAt(i, 0))
 						/* 곡 일치여부 */ && Mainsinger.equals(SubTable.getValueAt(i, 1))/* 가수 일치여부 */
 						&& Maingenre.equals(SubTable.getValueAt(i, 2))/* 장르 일치여부 */) {
@@ -144,7 +145,7 @@ public class MainFrames extends JFrame {
 				}
 			}
 			if (!check) {
-				System.out.println("불일치");
+//				System.out.println("불일치");
 				String Subsubcontents[] = new String[3];
 				Subsubcontents[0] = Maintitle;// 곡
 				Subsubcontents[1] = Mainsinger;// 가수
@@ -161,9 +162,11 @@ public class MainFrames extends JFrame {
 		String Maingenre = (String) MainTable.getValueAt(USrow, 4);// 장르
 
 		int Max = SubTable.getRowCount();
-		System.out.println(Max);
+//		System.out.println(Max);
 		if (Max == 0) {
-			System.out.println("선택행 없음");
+//			System.out.println("불일치");
+			CT.Send("OBReady?");
+//			System.out.println("선택행 없음");
 			String Subsubcontents[] = new String[3];
 			Subsubcontents[0] = Maintitle;// 곡
 			Subsubcontents[1] = Mainsinger;// 가수
@@ -175,7 +178,7 @@ public class MainFrames extends JFrame {
 				if (Maintitle.equals(SubTable.getValueAt(i, 0))
 						/* 곡 일치여부 */ && Mainsinger.equals(SubTable.getValueAt(i, 1))/* 가수 일치여부 */
 						&& Maingenre.equals(SubTable.getValueAt(i, 2))/* 장르 일치여부 */) {
-					System.out.println("일치");
+//					System.out.println("일치");
 					MB.addOver();
 					check = true;
 					break;
@@ -183,7 +186,7 @@ public class MainFrames extends JFrame {
 			}
 			if (!check) {
 //				System.out.println("불일치");
-//				CT.Send("OBReady?");
+				CT.Send("OBReady?");
 				USrow = MainTable.getSelectedRow();
 				String Subsubcontents[] = new String[3];
 				Subsubcontents[0] = Maintitle;// 곡
@@ -360,7 +363,6 @@ public class MainFrames extends JFrame {
 				SubTable.setShowVerticalLines(false);
 			}
 		};
-		popupSetting();
 		SubTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (e.getButton() == 3) {
@@ -373,6 +375,7 @@ public class MainFrames extends JFrame {
 				}
 			}
 		});
+		popupSetting();
 		SubScrollPane.setBounds(0, 125, 213, 415);
 		Ep.add(SubScrollPane);
 	}
@@ -385,22 +388,18 @@ public class MainFrames extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!LoginCk) {// 비로그인시
 					int Row = SubTable.getSelectedRow();
-
 					if (Row != -1) {
-
 						SubTableModel.removeRow(Row);
 					} else if (Row == -1) {
 						MB.SelRowMiss();
 					}
 				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생
-					// db에서 삭제먼저 윗줄에서 해줘야함
-
-					int Row = SubTable.getSelectedRow();
-					if (Row != -1) {
-						SubTableModel.removeRow(Row);
-					} else if (Row == -1) {
-						MB.SelRowMiss();
-					}
+					String noWid = guest.getText();
+					LogRow = SubTable.getSelectedRow();
+					String title = (String) SubTable.getValueAt(LogRow, 0);
+					String Singer = (String) SubTable.getValueAt(LogRow, 1);
+					String genre = (String) SubTable.getValueAt(LogRow, 2);
+					CT.Send("DEllSel/" + noWid + "/" + title + "/" + Singer + "/" + genre);
 				}
 			}
 		});
@@ -409,18 +408,13 @@ public class MainFrames extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!LoginCk) {// 비로그인시
-					int sumRow = MF.SubTableModel.getRowCount();
+					int sumRow = SubTableModel.getRowCount();
 					for (int i = sumRow; i > 0; i--) {
-						MF.SubTableModel.removeRow(0);
+						SubTableModel.removeRow(0);
 					}
 				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생
-
-					/// 요기요 요기
-					// db에서 삭제먼저 윗줄에서 해줘야함
-					int sumRow = MF.SubTableModel.getRowCount();
-					for (int i = sumRow; i > 0; i--) {
-						MF.SubTableModel.removeRow(0);
-					}
+					String noWid = guest.getText();
+					CT.Send("DellAll/" + noWid);
 				}
 			}
 		});

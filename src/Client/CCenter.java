@@ -95,6 +95,21 @@ public class CCenter {
 			MF.loginMSG.setText("<html>가입되지 않은 ID이거나 <br> ID/PW가 틀립니다.</html>");
 		} else if (msg.equals("OBok")) {
 			MF.CollectOB();
+		} else if (msg.equals("CollteADsucceed")) {
+			int sumRow = MF.SubTableModel.getRowCount();
+			for (int i = sumRow; i > 0; i--) {
+				MF.SubTableModel.removeRow(0);
+			}
+		} else if (msg.equals("CollteADsfail")) {
+			MB.Collectfail();
+		} else if (msg.equals("CollteSDsucceed")) {
+			if (MF.LogRow != -1) {
+				MF.SubTableModel.removeRow(MF.LogRow);
+			} else if (MF.LogRow == -1) {
+				MB.SelRowMiss();
+			}
+		} else if (msg.equals("CollteSDsfail")) {
+			MB.Collectfail();
 		}
 	}
 

@@ -70,8 +70,33 @@ public class SCenter extends Thread {
 		} else if (msg.equals("OBReady?")) {
 			Sob.receveCollte();
 			Send("OBok");
+		} else if (msg.contains("DellAll")) {
+			CollteAllDell(msg);
+		} else if (msg.contains("DEllSel")) {
+			CollteSelDell(msg);
 		} else {
 			System.out.println("클라이언트 승인 오류");
+		}
+	}
+
+	private void CollteSelDell(String msg) {
+		int k = dao.CollteRSelDell(msg);
+		if (k == 1) {
+			Send("CollteSDsucceed");
+		} else if (k == 0) {
+			Send("CollteSDsfail");
+		}
+	}
+
+	private void CollteAllDell(String msg) {
+		StringTokenizer tk = new StringTokenizer(msg, "/");
+		if (tk.nextToken().equals("DellAll")) {
+			int k = dao.CollteRAllDell(tk.nextToken());
+			if (k > 0) {
+				Send("CollteADsucceed");
+			} else if (k == 0) {
+				Send("CollteADsfail");
+			}
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import Server.SCenter;
 
@@ -180,7 +181,6 @@ public class DAO {
 				rs = st.executeQuery(sql);
 				if (rs.next()) {
 					String modeGenre = rs.getString("장르");
-					recommend(modeGenre);
 					return recommend(modeGenre);
 				}
 			} catch (SQLException e) {
@@ -213,5 +213,42 @@ public class DAO {
 
 		}
 		return Data;
+	}
+
+	public int CollteRAllDell(String nextToken) {
+		int k = 0;
+		if (link()) {
+			String sql = "delete from popular where id = ?";
+			try {
+				PreparedStatement pps = con.prepareStatement(sql);
+				pps.setString(1, nextToken);
+				k = pps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return k;
+	}
+
+	public int CollteRSelDell(String msg) {
+		int k = 0;
+		StringTokenizer tk = new StringTokenizer(msg, "/");
+		tk.nextToken();
+		if (link()) {
+			String sql = "delete from popular where id = ? and 곡명 = ? and 가수명 = ? and 장르 = ?";
+			try {
+				PreparedStatement pps = con.prepareStatement(sql);
+				pps.setString(1, tk.nextToken());
+				pps.setString(2, tk.nextToken());
+				pps.setString(3, tk.nextToken());
+				pps.setString(4, tk.nextToken());
+				System.out.println("해치웠나? - " + k);
+				k = pps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return k;
 	}
 }

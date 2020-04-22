@@ -63,7 +63,7 @@ public class CObject {
 	}
 
 	public void SendCollete(Client_DTO CD) {// user가 더블클릭시마다 사용
-		System.out.println("클라이언트 OB송신");
+//		System.out.println("클라이언트 OB송신");
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			// 객체 분해시 순서대로 byte를 재조립 해야 하므로 순서대로 분해하는 틀(객체를 클래스화하는걸 생각해보자)을 만들어줌
@@ -87,7 +87,7 @@ public class CObject {
 			@Override
 			public void run() {
 				byte[] reBuffer = new byte[1024];
-				System.out.println("서버로부터 OB수신");
+//				System.out.println("서버로부터 OB수신");
 				try {
 					IS = sc.getInputStream();
 					IS.read(reBuffer);// 여기서 대기로 인해 코드가 멈추는걸 방지하기 위해 멀티 쓰레드

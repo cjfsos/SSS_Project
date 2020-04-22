@@ -50,7 +50,7 @@ public class SObject {
 			public void run() {
 				byte[] reBuffer = new byte[1024];
 				// byte타입으로 받을 그릇 생성
-				System.out.println("서버OB수신");
+//				System.out.println("서버OB수신");
 				try {
 					IS = sc.getInputStream();
 					// 소켓을 통해 받을 InputStream생성
