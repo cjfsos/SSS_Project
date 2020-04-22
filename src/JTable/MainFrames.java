@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import Client.CCenter;
 import Client.CObject;
 import DataBase.Client_DTO;
+import music.MusicLod;
 
 public class MainFrames extends JFrame {
 	private JPanel contentPane;
@@ -59,6 +60,7 @@ public class MainFrames extends JFrame {
 	public boolean CurrentlyList = false;
 	int USrow = -1;
 	public int LogRow = -1;
+	MusicLod ML = null;
 
 	/**
 	 * Launch the application.
@@ -349,14 +351,13 @@ public class MainFrames extends JFrame {
 	}
 
 	private void EpCenterSettig() {
-		String Subheader[] = { "곡명", "가수명", "장르" };
+		String Subheader[] = { "", "재생목록", "" };
 		SubTableModel = new DefaultTableModel(subContents, Subheader) {
 			public boolean isCellEditable(int a, int b) {
 				return false;
 			}
 		};
 		SubTable = new JTable(SubTableModel);
-		SubTable.getTableHeader().setVisible(false);
 		JScrollPane SubScrollPane = new JScrollPane(SubTable) {
 			public void setBorder(Border border) {
 				SubTable.setShowHorizontalLines(false);
@@ -412,7 +413,7 @@ public class MainFrames extends JFrame {
 					for (int i = sumRow; i > 0; i--) {
 						SubTableModel.removeRow(0);
 					}
-				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생
+				} else if (LoginCk && CurrentlyList) {// 로그인 후 최근재생리스트
 					String noWid = guest.getText();
 					CT.Send("DellAll/" + noWid);
 				}
@@ -428,15 +429,44 @@ public class MainFrames extends JFrame {
 		Ep.add(panel);
 		panel.setLayout(null);
 
-		JLabel playBtn = new JLabel("");
-		playBtn.setBounds(27, 10, 45, 35);
-		panel.add(playBtn);
-		playBtn.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
+		JButton playBten = new JButton("");
+		playBten.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = SubTable.getSelectedRow();
+				if (row > -1) {
+					String Seltitle = (String) SubTable.getValueAt(row, 0);
+					if(ML == null) {
+						ML = new MusicLod(Seltitle);
+						ML.start();
+					}else {
+						ML.Close();
+						ML = new MusicLod(Seltitle);
+						ML.start();
+					}
+				} else {
+					MB.SelRowMiss();
+				}
+			}
+		});
+		playBten.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
+		playBten.setBounds(44, 10, 45, 35);
+		panel.add(playBten);
 
-		JLabel label = new JLabel("");
-		label.setBounds(127, 10, 45, 35);
-		panel.add(label);
-		label.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
+		JButton button = new JButton("");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ML == null) {
+					System.out.println(ML);
+					MB.NoPlaying();
+				}else {
+					System.out.println(ML);
+					ML.Close();
+				}
+			}
+		});
+		button.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
+		button.setBounds(134, 10, 45, 35);
+		panel.add(button);
 	}
 
 	private void WestSetting() {
@@ -451,5 +481,4 @@ public class MainFrames extends JFrame {
 		MainTable.getTableHeader().setReorderingAllowed(false);
 		MainTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-
 }

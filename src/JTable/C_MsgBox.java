@@ -46,6 +46,36 @@ public class C_MsgBox extends JFrame {
 //		addOver();
 //		recommendNull();
 //		Collectfail();
+//		NoPlaying();
+	}
+
+	public void NoPlaying() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("현재 재생중인 곡이 없습니다.");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 24, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 
 	public void Collectfail() {
@@ -156,7 +186,7 @@ public class C_MsgBox extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel_2 = new JLabel("원하는 리스트를 왼쪽클릭으로 선택");
+		JLabel lblNewLabel_2 = new JLabel("재생목록 안에 곡을  선택 후");
 		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setBounds(12, 10, 218, 22);
