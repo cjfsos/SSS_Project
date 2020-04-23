@@ -47,6 +47,73 @@ public class C_MsgBox extends JFrame {
 //		recommendNull();
 //		Collectfail();
 //		NoPlaying();
+//		logNotNoeBtn();
+//		beforeBtn();
+//		NextBtn();
+	}
+
+	public void beforeBtn() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("현재곡이 가장 이전곡입니다.");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 35, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+		
+		JLabel label = new JLabel("이전곡으로 이동 할 수 없습니다.");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("굴림", Font.PLAIN, 13));
+		label.setBounds(12, 10, 218, 22);
+		contentPane.add(label);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+	}
+
+	public void logNotNoeBtn() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("비회원은 이용할 수 없는 기능입니다.");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 24, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 
 	public void NoPlaying() {
@@ -312,6 +379,41 @@ public class C_MsgBox extends JFrame {
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(12, 52, 208, 15);
 		contentPane.add(lblNewLabel_3);
+
+		this.setVisible(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+	}
+
+	public void NextBtn() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 258, 149);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("현재곡이 가장 마지막 곡입니다.");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 13));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(12, 35, 218, 22);
+		contentPane.add(lblNewLabel_2);
+
+		JButton btnNewButton_1 = new JButton("확인");
+		btnNewButton_1.setBounds(60, 67, 105, 30);
+		contentPane.add(btnNewButton_1);
+		
+		JLabel label = new JLabel("다음곡으로 이동 할 수 없습니다.");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("굴림", Font.PLAIN, 13));
+		label.setBounds(12, 10, 218, 22);
+		contentPane.add(label);
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);

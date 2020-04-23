@@ -430,43 +430,138 @@ public class MainFrames extends JFrame {
 		panel.setLayout(null);
 
 		JButton playBten = new JButton("");
+		playBten.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
 		playBten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = SubTable.getSelectedRow();
 				if (row > -1) {
 					String Seltitle = (String) SubTable.getValueAt(row, 0);
-					if(ML == null) {
-						ML = new MusicLod(Seltitle);
-						ML.start();
-					}else {
-						ML.Close();
-						ML = new MusicLod(Seltitle);
-						ML.start();
+					if (LoginCk) {
+						if (ML == null) {
+							ML = new MusicLod(Seltitle);
+							ML.start();
+						} else {
+							ML.Close();
+							ML = new MusicLod(Seltitle);
+							ML.start();
+						}
+					} else {
+						if (ML == null) {
+							ML = new MusicLod(Seltitle);
+							ML.start();
+							ML.limited();// 시간제한 부분 1분만 미리듣기
+						} else {
+							ML.Close();
+							ML = new MusicLod(Seltitle);
+							ML.start();
+							ML.limited();
+						}
 					}
 				} else {
 					MB.SelRowMiss();
 				}
 			}
 		});
-		playBten.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\재생버튼.png"));
-		playBten.setBounds(44, 10, 45, 35);
+		playBten.setBounds(50, 10, 30, 35);
 		panel.add(playBten);
 
-		JButton button = new JButton("");
-		button.addActionListener(new ActionListener() {
+		JButton playStopbutton = new JButton("");
+		playStopbutton.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
+		playStopbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ML == null) {
 					System.out.println(ML);
 					MB.NoPlaying();
-				}else {
+				} else {
 					System.out.println(ML);
 					ML.Close();
 				}
 			}
 		});
-		button.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\정지.png"));
-		button.setBounds(134, 10, 45, 35);
-		panel.add(button);
+		playStopbutton.setBounds(175, 10, 30, 35);
+		panel.add(playStopbutton);
+
+		JButton playpreviousBtn = new JButton("");
+		playpreviousBtn.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\이전곡.png"));
+		playpreviousBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = SubTable.getSelectedRow();
+				if (LoginCk) {
+					if (row == 0) {
+						MB.beforeBtn();
+					} else if (row > 0) {
+						String BeforeSeltitle = (String) SubTable.getValueAt(row - 1, 0);
+						if (ML == null) {
+							ML = new MusicLod(BeforeSeltitle);
+							ML.start();
+							SubTable.setRowSelectionInterval(row - 1, row - 1);
+						} else {
+							ML.Close();
+							ML = new MusicLod(BeforeSeltitle);
+							SubTable.setRowSelectionInterval(row - 1, row - 1);
+							ML.start();
+						}
+					}
+				} else {
+					MB.logNotNoeBtn();
+				}
+			}
+		});
+		playpreviousBtn.setBounds(10, 10, 30, 35);
+		panel.add(playpreviousBtn);
+
+		JButton playnextBtn = new JButton("");
+		playnextBtn.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\다음 곡.png"));
+		playnextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = SubTable.getSelectedRow();
+				System.out.println(row + "선택한 행");
+				int limit = SubTable.getRowCount() - 1;
+				System.out.println(limit + "행 전체 갯수");
+				if (LoginCk) {
+					if (row == limit) {
+						MB.NextBtn();
+					} else if (row < limit) {
+						String NextSeltitle = (String) SubTable.getValueAt(row + 1, 0);
+						if (ML == null) {
+							ML = new MusicLod(NextSeltitle);
+							ML.start();
+							SubTable.setRowSelectionInterval(row + 1, row + 1);
+						} else {
+							ML.Close();
+							ML = new MusicLod(NextSeltitle);
+							SubTable.setRowSelectionInterval(row + 1, row + 1);
+							ML.start();
+						}
+					}
+				} else {
+					MB.logNotNoeBtn();
+				}
+			}
+		});
+		playnextBtn.setBounds(90, 10, 30, 35);
+		panel.add(playnextBtn);
+
+		JButton oneSelInf = new JButton("");
+		oneSelInf.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\1곡 반복재생.png"));
+		oneSelInf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = SubTable.getSelectedRow();
+				if (row > -1) {
+					String Seltitle = (String) SubTable.getValueAt(row, 0);
+					if (LoginCk) {
+						if (ML == null) {
+							ML = new MusicLod(Seltitle);
+							ML.OneInfinite();
+						}
+					} else {
+						MB.logNotNoeBtn();
+					}
+				}
+			}
+		});
+		oneSelInf.setBounds(135, 10, 30, 35);
+		panel.add(oneSelInf);
 	}
 
 	private void WestSetting() {
