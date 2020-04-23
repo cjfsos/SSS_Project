@@ -14,6 +14,7 @@ public class MusicLod extends Thread {
 	private BufferedInputStream bio;
 	private Player play;
 	private boolean onOff = true;
+	public int check = 0;
 
 	public MusicLod(String name) {
 		System.out.println("C:\\Users\\Administrator\\Desktop\\" + name + ".mp3");

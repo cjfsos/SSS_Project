@@ -3,7 +3,9 @@ package JTable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +27,7 @@ import Client.CCenter;
 import Client.CObject;
 import DataBase.Client_DTO;
 import music.MusicLod;
+import java.awt.Font;
 
 public class MainFrames extends JFrame {
 	private JPanel contentPane;
@@ -299,18 +302,15 @@ public class MainFrames extends JFrame {
 
 		guest = new JLabel("");
 		guest.setHorizontalAlignment(SwingConstants.RIGHT);
-		guest.setBounds(12, 20, 80, 22);
+		guest.setBounds(5, 10, 80, 22);
 		EpNp2.add(guest);
 
 		JLabel lblNewLabel = new JLabel("님 접속중");
-		lblNewLabel.setBounds(104, 20, 77, 22);
+		lblNewLabel.setBounds(97, 10, 59, 22);
 		EpNp2.add(lblNewLabel);
 
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(12, 52, 90, 23);
-		EpNp2.add(btnNewButton);
-
-		JButton logout = new JButton("로그아웃");
+		JButton logout = new JButton("");
+		logout.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\로그아웃.png"));
 		logout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				guest.setText("");
@@ -324,7 +324,7 @@ public class MainFrames extends JFrame {
 				}
 			}
 		});
-		logout.setBounds(108, 52, 90, 23);
+		logout.setBounds(160, 10, 38, 27);
 		EpNp2.add(logout);
 
 		JButton button_1 = new JButton("추천받기");
@@ -335,7 +335,7 @@ public class MainFrames extends JFrame {
 				CurrentlyList = false;
 			}
 		});
-		button_1.setBounds(108, 85, 90, 23);
+		button_1.setBounds(108, 80, 90, 23);
 		EpNp2.add(button_1);
 
 		JButton button_2 = new JButton("재생 목록");
@@ -345,9 +345,24 @@ public class MainFrames extends JFrame {
 				CurrentlyList = true;
 			}
 		});
-		button_2.setBounds(12, 85, 90, 23);
+		button_2.setBounds(12, 80, 90, 23);
 		EpNp2.add(button_2);
+		
+		JLabel label = new JLabel("");
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setBounds(57, 42, 144, 22);
+		EpNp2.add(label);
 		EpNp2.setVisible(false);
+		
+		SimpleDateFormat form = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
+		Date type = new Date();
+		String time = form.format(type);
+		label.setText(time);
+		
+		JLabel label_1 = new JLabel("접속시간");
+		label_1.setFont(new Font("굴림", Font.PLAIN, 11));
+		label_1.setBounds(8, 42, 44, 22);
+		EpNp2.add(label_1);
 	}
 
 	private void EpCenterSettig() {
@@ -434,6 +449,7 @@ public class MainFrames extends JFrame {
 		playBten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = SubTable.getSelectedRow();
+				int endRow = SubTable.getRowCount() - 1;
 				if (row > -1) {
 					String Seltitle = (String) SubTable.getValueAt(row, 0);
 					if (LoginCk) {
@@ -515,9 +531,7 @@ public class MainFrames extends JFrame {
 		playnextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = SubTable.getSelectedRow();
-				System.out.println(row + "선택한 행");
 				int limit = SubTable.getRowCount() - 1;
-				System.out.println(limit + "행 전체 갯수");
 				if (LoginCk) {
 					if (row == limit) {
 						MB.NextBtn();
