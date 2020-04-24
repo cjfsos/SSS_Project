@@ -16,8 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import DataBase.DAO;
-
 public class Sign_Up extends JFrame {
 
 	JPanel contentPane;
@@ -26,12 +24,11 @@ public class Sign_Up extends JFrame {
 	JTextField PWtextField_2;
 	public JLabel idcheck = new JLabel("");
 	public JButton btnId = null;
-	JLabel pwcheck = new JLabel("");	
+	JLabel pwcheck = new JLabel("");
 	public boolean idckeked = false;
 	boolean pwckeked = false;
 	String id;
 	String pw;
-	DAO daoIns = DAO.getInstance();
 	JLabel pwicon1 = new JLabel("");
 	JLabel pwicon2 = new JLabel("");
 	MainFrames MF = null;

@@ -17,7 +17,6 @@ public class MusicLod extends Thread {
 	public int check = 0;
 
 	public MusicLod(String name) {
-		System.out.println("C:\\Users\\Administrator\\Desktop\\" + name + ".mp3");
 		try {
 			f = new File("C:\\Users\\Administrator\\Desktop\\" + name + ".mp3");
 			fis = new FileInputStream(f);

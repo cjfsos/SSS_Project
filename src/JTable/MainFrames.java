@@ -1,5 +1,6 @@
 package JTable;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,13 +22,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import Client.CCenter;
 import Client.CObject;
 import DataBase.Client_DTO;
 import music.MusicLod;
-import java.awt.Font;
 
 public class MainFrames extends JFrame {
 	private JPanel contentPane;
@@ -89,7 +91,7 @@ public class MainFrames extends JFrame {
 		this.CO = CO;
 		CO.setMFins(MF);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 850, 640);
+		setBounds(100, 100, 672, 430);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -101,7 +103,7 @@ public class MainFrames extends JFrame {
 
 	private void EastSetting() {
 		Ep = new JPanel();
-		Ep.setBounds(621, 0, 213, 602);
+		Ep.setBounds(451, 0, 213, 399);
 		contentPane.add(Ep);
 		Ep.setLayout(null);
 		EpNorthSetting1();
@@ -121,7 +123,11 @@ public class MainFrames extends JFrame {
 				}
 			}
 		});
-
+		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) MainTable.getTableHeader().getDefaultRenderer();
+		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		MainTable.getTableHeader().setDefaultRenderer(renderer);
+		TableColumnModel tc = MainTable.getColumnModel();
+		tc.getColumn(0).setCellRenderer(renderer);
 	}
 
 	protected void beforeSet() {
@@ -347,18 +353,18 @@ public class MainFrames extends JFrame {
 		});
 		button_2.setBounds(12, 80, 90, 23);
 		EpNp2.add(button_2);
-		
+
 		JLabel label = new JLabel("");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		label.setBounds(57, 42, 144, 22);
 		EpNp2.add(label);
 		EpNp2.setVisible(false);
-		
+
 		SimpleDateFormat form = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
 		Date type = new Date();
 		String time = form.format(type);
 		label.setText(time);
-		
+
 		JLabel label_1 = new JLabel("접속시간");
 		label_1.setFont(new Font("굴림", Font.PLAIN, 11));
 		label_1.setBounds(8, 42, 44, 22);
@@ -392,7 +398,7 @@ public class MainFrames extends JFrame {
 			}
 		});
 		popupSetting();
-		SubScrollPane.setBounds(0, 125, 213, 415);
+		SubScrollPane.setBounds(0, 125, 213, 273);
 		Ep.add(SubScrollPane);
 	}
 
@@ -440,7 +446,7 @@ public class MainFrames extends JFrame {
 
 	private void EpSouthSetting() {
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 539, 213, 63);
+		panel.setBounds(0, 334, 213, 63);
 		Ep.add(panel);
 		panel.setLayout(null);
 
@@ -581,7 +587,7 @@ public class MainFrames extends JFrame {
 	private void WestSetting() {
 
 		JScrollPane MainScrollPane = new JScrollPane(MainTable);
-		MainScrollPane.setBounds(0, 0, 623, 602);
+		MainScrollPane.setBounds(0, 0, 452, 399);
 		contentPane.add(MainScrollPane);
 
 		String loadList = "SongList";
